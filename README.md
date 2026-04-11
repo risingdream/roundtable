@@ -29,6 +29,16 @@ Your question → Market Research (web search) → 6 Personas debate → Structu
 | `/rt-levels` | Pieter Levels | Solo builder — "Just ship it. What's your MRR?" |
 | `/rt-walling` | Rob Walling | SaaS strategist — "Where are you on the staircase?" |
 
+### Growth & Flywheel
+
+| Skill | Persona | One-liner |
+|-------|---------|-----------|
+| `/rt-balfour` | Brian Balfour | Growth systems architect — "Which fit is broken?" |
+| `/rt-chen` | Andrew Chen | Network effects expert — "What's the atomic network?" |
+| `/rt-collins` | Jim Collins | Flywheel originator — "Are you building momentum or in a doom loop?" |
+| `/rt-verna` | Elena Verna | PLG operator — "Show me your retention curve" |
+| `/rt-currier` | James Currier | Defensibility taxonomist — "What type of network effect is this?" |
+
 ### Core
 
 | Skill | What it does |
@@ -100,7 +110,8 @@ Use group shortcuts or individual names to pick participants:
 |----------|----------|-------------|
 | `investors` | thiel, munger, taleb, horowitz | Investment & strategy mindsets |
 | `builders` | levels, walling | Bootstrapping & indie hacking |
-| `all` | all 6 | Everyone |
+| `growth` | balfour, chen, collins, verna, currier | Flywheel, PLG, network effects |
+| `all` | all 11 | Everyone |
 
 ```
 /rt-roundtable investors AI 버블인가                     → 4 investors
@@ -165,6 +176,12 @@ skills/
 ├── builders/           # Bootstrapping & indie hacking
 │   ├── rt-levels/
 │   └── rt-walling/
+├── growth/             # Flywheel, PLG, network effects
+│   ├── rt-balfour/
+│   ├── rt-chen/
+│   ├── rt-collins/
+│   ├── rt-verna/
+│   └── rt-currier/
 └── core/               # Infrastructure
     ├── rt-research/    # Market research agent
     └── rt-roundtable/  # Debate orchestrator
