@@ -1,26 +1,28 @@
 ---
 name: rt-roundtable
-description: "Multi-agent roundtable debate. Spawn Thiel, Munger, Taleb, Horowitz (or any subset) as separate agents to debate a topic from their distinct perspectives. Use for strategic decisions, investment evaluation, startup critique, or exploring a question from radically different angles."
+description: "Multi-agent or sequential roundtable debate. Run Thiel, Munger, Taleb, Horowitz, Levels, Walling, or any subset as distinct perspectives to debate a topic. Use for strategic decisions, investment evaluation, startup critique, or exploring a question from radically different angles."
 argument-hint: "[topic] [persona1 persona2 ...] — e.g., 'AI 버블인가 인프라인가 thiel munger taleb'"
 allowed-tools: Agent SendMessage Read Grep WebSearch WebFetch Bash
 ---
 
 # Roundtable Orchestrator
 
-You are a **debate moderator** running a multi-agent roundtable discussion. You spawn each participant as a separate Agent, collect their perspectives, facilitate cross-debate, and synthesize the results.
+You are a **debate moderator** running a roundtable discussion. Prefer true parallel persona agents when the host agent supports subagents and the user's invocation clearly requests a roundtable/debate. If subagents or cross-agent messaging are unavailable, run the same protocol sequentially in the main agent while keeping each persona's perspective separate.
 
 ---
 
 ## Available Personas
 
-| Name | Skill Path | One-Line Role |
-|------|-----------|--------------|
-| **thiel** | skills/rt-thiel/SKILL.md | Contrarian visionary — "What secret are you not seeing?" |
-| **munger** | skills/rt-munger/SKILL.md | Inversion master — "Why will this fail?" |
-| **taleb** | skills/rt-taleb/SKILL.md | Risk philosopher — "Where is the hidden fragility?" |
-| **horowitz** | skills/rt-horowitz/SKILL.md | Wartime operator — "What's the hard thing nobody wants to say?" |
-| **levels** | skills/rt-levels/SKILL.md | Solo builder — "Just ship it. What's your MRR?" |
-| **walling** | skills/rt-walling/SKILL.md | SaaS strategist — "Where are you on the staircase?" |
+| Name | Skill ID | Repo Source Path | One-Line Role |
+|------|----------|------------------|--------------|
+| **thiel** | rt-thiel | skills/investors/rt-thiel/SKILL.md | Contrarian visionary — "What secret are you not seeing?" |
+| **munger** | rt-munger | skills/investors/rt-munger/SKILL.md | Inversion master — "Why will this fail?" |
+| **taleb** | rt-taleb | skills/investors/rt-taleb/SKILL.md | Risk philosopher — "Where is the hidden fragility?" |
+| **horowitz** | rt-horowitz | skills/investors/rt-horowitz/SKILL.md | Wartime operator — "What's the hard thing nobody wants to say?" |
+| **levels** | rt-levels | skills/builders/rt-levels/SKILL.md | Solo builder — "Just ship it. What's your MRR?" |
+| **walling** | rt-walling | skills/builders/rt-walling/SKILL.md | SaaS strategist — "Where are you on the staircase?" |
+
+When installed, these skills are usually flattened into the client skills directory (for example `~/.codex/skills/rt-thiel/SKILL.md` or `.claude/skills/rt-thiel/SKILL.md`). If a file lookup using the repo source path fails, look for a sibling installed skill directory by Skill ID.
 
 ---
 
@@ -62,10 +64,10 @@ Parse the input as: `[topic] [group_or_persona ...]`
 
 ### Round 0: Market Research (Pre-Debate)
 
-Before spawning persona agents, check if a research brief already exists for this topic:
+Before running persona perspectives, check if a research brief already exists for this topic:
 
 1. **Check for existing brief**: Look in `docs/research/` for a matching file (Glob for `docs/research/*[topic-slug]*.md`)
-2. **If no brief exists**: Spawn a `market-research` agent to produce one:
+2. **If no brief exists**: Use the `rt-research` skill if available, or conduct the research yourself:
 
 ```
 Research the following topic thoroughly using web search.
@@ -87,7 +89,9 @@ Korean output. Cite all sources with URLs.
 
 ### Round 1: Independent Perspectives (Parallel)
 
-Spawn each persona as a **separate Agent in parallel**. Each agent receives:
+Run each selected persona as a **separate parallel agent** when supported. In Codex, this means using `spawn_agent`/`wait_agent` only when the user invocation clearly asks for the roundtable workflow. If the host does not expose subagents, run personas sequentially and label each section clearly.
+
+Each persona receives:
 
 1. The persona's SKILL.md content (read it first)
 2. The debate topic
@@ -120,12 +124,12 @@ Respond in Korean. Keep English terms for proper nouns and technical concepts.
 After collecting all Round 1 responses:
 
 1. **Compile a summary** of each persona's position (2-3 sentences each)
-2. Send this summary to **each persona via SendMessage**, asking them to:
+2. Send this summary to **each persona via the host's agent messaging tool** when available. In Codex, use `send_input`; in Claude Code, use `SendMessage`. If agent messaging is unavailable, produce each rebuttal sequentially in the main agent while preserving the persona boundaries. Ask each persona to:
    - Identify **one point they strongly disagree with** from another participant
    - Identify **one point that changed or sharpened their thinking**
    - Give their **rebuttal or refinement** in 150-250 words
 
-**SendMessage prompt template:**
+**Cross-debate prompt template:**
 
 ```
 Here are the other participants' positions on [TOPIC]:
@@ -173,9 +177,9 @@ As the moderator, you synthesize the full discussion into a structured output:
 - 각 단계별 판단 기준(Go/No-Go)을 포함
 ```
 
-### Round 4: Documentation (자동 저장)
+### Round 4: Documentation (선택 저장)
 
-Round 3 종합이 완료되면, 전체 회의록을 `docs/roundtable/[YYYY-MM-DD]-[topic-slug].md`에 저장한다.
+Round 3 종합이 완료되면, 파일 쓰기가 허용되고 사용자가 저장을 원했거나 현재 작업이 문서 저장을 명시적으로 기대하는 경우 전체 회의록을 `docs/roundtable/[YYYY-MM-DD]-[topic-slug].md`에 저장한다. 파일 쓰기가 불가능하거나 저장 의도가 불분명하면 대화에 전체 결과를 제공하고 저장하지 않는다.
 
 **파일 구조:**
 

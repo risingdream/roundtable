@@ -1,10 +1,10 @@
 # Roundtable
 
-AI advisory roundtable for Claude Code. Six legendary thinkers debate your strategy — backed by real-time market research.
+AI advisory roundtable for Claude Code and Codex CLI. Six legendary thinkers debate your strategy — backed by real-time market research.
 
 ## What is this?
 
-A set of Claude Code skills that let you consult AI personas of world-class strategists, then run structured debates between them on any topic.
+A set of agent skills that let you consult AI personas of world-class strategists, then run structured debates between them on any topic.
 
 **The flow:**
 ```
@@ -38,11 +38,17 @@ Your question → Market Research (web search) → 6 Personas debate → Structu
 
 ## Install
 
-### One-liner (recommended)
+### One-liners
 
 ```bash
 cd your-project
 curl -fsSL https://raw.githubusercontent.com/risingdream/roundtable/main/install.sh | bash
+```
+
+Codex CLI:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/risingdream/roundtable/main/install.sh | bash -s -- --codex
 ```
 
 ### Multi-platform
@@ -51,10 +57,11 @@ Built on the [Agent Skills open standard](https://agentskills.io). Works with Cl
 
 ```bash
 ./install.sh              # Claude Code  → .claude/skills/
-./install.sh --codex      # Codex CLI    → .codex/skills/
+./install.sh --codex      # Codex CLI    → ${CODEX_HOME:-~/.codex}/skills/
 ./install.sh --openclaw   # OpenClaw     → skills/
 ./install.sh --hermes     # Hermes Agent → ~/.hermes/skills/
 ./install.sh --all        # All platforms
+./install.sh --dest DIR   # Custom skills directory
 ```
 
 ### Manual
@@ -62,6 +69,7 @@ Built on the [Agent Skills open standard](https://agentskills.io). Works with Cl
 ```bash
 git clone https://github.com/risingdream/roundtable.git
 cp -r roundtable/skills/**/rt-* .claude/skills/
+# Codex: cp -r roundtable/skills/**/rt-* "${CODEX_HOME:-$HOME/.codex}/skills/"
 ```
 
 ### Selective install
@@ -122,7 +130,7 @@ Produces a structured brief saved to `docs/research/[topic].md`.
 
 ### Add your own persona
 
-1. Create `.claude/skills/rt-yourpersona/SKILL.md`:
+1. Create `rt-yourpersona/SKILL.md` in your agent client's skills directory (for example `.claude/skills/rt-yourpersona/SKILL.md` or `${CODEX_HOME:-$HOME/.codex}/skills/rt-yourpersona/SKILL.md`):
 
 ```markdown
 ---
@@ -164,8 +172,9 @@ skills/
 
 ## Requirements
 
-- [Claude Code](https://claude.ai/code) CLI or Desktop app
-- Claude API key (skills run on your own API key — no additional cost from this project)
+- Claude Code, Codex CLI, or another agent client that supports agent skills
+- Web search access for `rt-research` and live market briefs
+- Restart your agent client after installing new skills
 
 ## License
 

@@ -8,34 +8,58 @@ set -e
 REPO_URL="https://github.com/risingdream/roundtable"
 TEMP_DIR=$(mktemp -d)
 PLATFORM=""
+CUSTOM_DEST=""
+
+cleanup() {
+  rm -rf "$TEMP_DIR"
+}
+trap cleanup EXIT
 
 # Parse arguments
-for arg in "$@"; do
+while [ $# -gt 0 ]; do
+  arg="$1"
   case "$arg" in
     --codex)    PLATFORM="codex" ;;
     --openclaw) PLATFORM="openclaw" ;;
     --hermes)   PLATFORM="hermes" ;;
     --all)      PLATFORM="all" ;;
+    --dest)
+      shift
+      if [ $# -eq 0 ]; then
+        echo "Error: --dest requires a directory path" >&2
+        exit 1
+      fi
+      CUSTOM_DEST="$1"
+      ;;
     --help|-h)
-      echo "Usage: ./install.sh [--codex|--openclaw|--hermes|--all]"
+      echo "Usage: ./install.sh [--codex|--openclaw|--hermes|--all] [--dest DIR]"
       echo ""
       echo "  (default)     Install to Claude Code   (.claude/skills/)"
-      echo "  --codex       Install to Codex CLI      (.codex/skills/)"
+      echo "  --codex       Install to Codex CLI      (\${CODEX_HOME:-~/.codex}/skills/)"
       echo "  --openclaw    Install to OpenClaw        (skills/)"
       echo "  --hermes      Install to Hermes Agent    (~/.hermes/skills/)"
       echo "  --all         Install to all platforms"
+      echo "  --dest DIR    Install to a custom skills directory"
       exit 0
       ;;
+    *)
+      echo "Error: unknown option: $arg" >&2
+      echo "Run ./install.sh --help for usage." >&2
+      exit 1
+      ;;
   esac
+  shift
 done
 
 # Determine target directories
 declare -a TARGETS
 
-if [ "$PLATFORM" = "all" ]; then
-  TARGETS=(".claude/skills" ".codex/skills" "skills" "$HOME/.hermes/skills")
+if [ -n "$CUSTOM_DEST" ]; then
+  TARGETS=("$CUSTOM_DEST")
+elif [ "$PLATFORM" = "all" ]; then
+  TARGETS=(".claude/skills" "${CODEX_HOME:-$HOME/.codex}/skills" "skills" "$HOME/.hermes/skills")
 elif [ "$PLATFORM" = "codex" ]; then
-  TARGETS=(".codex/skills")
+  TARGETS=("${CODEX_HOME:-$HOME/.codex}/skills")
 elif [ "$PLATFORM" = "openclaw" ]; then
   TARGETS=("skills")
 elif [ "$PLATFORM" = "hermes" ]; then
@@ -65,7 +89,8 @@ for SKILLS_DIR in "${TARGETS[@]}"; do
     for skill in "$group"*/; do
       skill_name=$(basename "$skill")
       if [ -f "$skill/SKILL.md" ]; then
-        cp -r "$skill" "$SKILLS_DIR/$skill_name"
+        mkdir -p "$SKILLS_DIR/$skill_name"
+        cp -R "$skill"/. "$SKILLS_DIR/$skill_name"/
         count=$((count + 1))
       fi
     done
@@ -73,9 +98,6 @@ for SKILLS_DIR in "${TARGETS[@]}"; do
 
   echo "  [$SKILLS_DIR] $count skills installed"
 done
-
-# Cleanup
-rm -rf "$TEMP_DIR"
 
 echo ""
 echo "Usage:"
@@ -89,3 +111,4 @@ echo ""
 echo "Example:"
 echo "  /rt-roundtable builders AI SaaS side project monetization"
 echo ""
+echo "Restart your agent client to pick up newly installed skills."
