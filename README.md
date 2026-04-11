@@ -45,6 +45,18 @@ cd your-project
 curl -fsSL https://raw.githubusercontent.com/risingdream/roundtable/main/install.sh | bash
 ```
 
+### Multi-platform
+
+Built on the [Agent Skills open standard](https://agentskills.io). Works with Claude Code, Codex CLI, OpenClaw, and Hermes Agent.
+
+```bash
+./install.sh              # Claude Code  → .claude/skills/
+./install.sh --codex      # Codex CLI    → .codex/skills/
+./install.sh --openclaw   # OpenClaw     → skills/
+./install.sh --hermes     # Hermes Agent → ~/.hermes/skills/
+./install.sh --all        # All platforms
+```
+
 ### Manual
 
 ```bash
