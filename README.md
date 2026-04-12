@@ -116,9 +116,9 @@ Use group shortcuts or individual names to pick participants:
 ```
 /rt-roundtable investors AI 버블인가                     → 4 investors
 /rt-roundtable builders 사이드프로젝트 사업화               → levels + walling
-/rt-roundtable investors levels 케어 사업 적자 전략        → 4 investors + levels
-/rt-roundtable all 한국 세무 SaaS 시장 진입                → 6인 전원
-/rt-roundtable thiel walling 법인환급 확장 전략             → individual pick
+/rt-roundtable investors levels AI 에이전트 시장 진입        → 4 investors + levels
+/rt-roundtable all 한국 B2B SaaS 시장 진출                 → all 11
+/rt-roundtable thiel walling SaaS 확장 vs 채널 다변화       → individual pick
 ```
 
 Groups and individual names can be mixed freely. Default (no names) = `investors`.
