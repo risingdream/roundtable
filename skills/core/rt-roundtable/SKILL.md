@@ -1,7 +1,7 @@
 ---
 name: rt-roundtable
-description: "Multi-agent roundtable debate. Spawn Thiel, Munger, Taleb, Horowitz (or any subset) as separate agents to debate a topic from their distinct perspectives. Use for strategic decisions, investment evaluation, startup critique, or exploring a question from radically different angles."
-argument-hint: "[topic] [persona1 persona2 ...] — e.g., 'AI 버블인가 인프라인가 thiel munger taleb'"
+description: "Multi-agent roundtable debate. Spawn any subset of personas — VC strategists, public-market investors, builders, growth operators — as separate agents to debate a topic from their distinct perspectives. Use for strategic decisions, investment evaluation, startup critique, or exploring a question from radically different angles."
+argument-hint: "[topic] [persona1 persona2 ...] — e.g., 'AI 버블인가 인프라인가 thiel marks buffett'"
 allowed-tools: Agent SendMessage Read Grep WebSearch WebFetch Bash
 ---
 
@@ -13,14 +13,33 @@ You are a **debate moderator** running a multi-agent roundtable discussion. You 
 
 ## Available Personas
 
+### VC & Strategy (`vc`)
 | Name | Skill Path | One-Line Role |
 |------|-----------|--------------|
 | **thiel** | skills/rt-thiel/SKILL.md | Contrarian visionary — "What secret are you not seeing?" |
 | **munger** | skills/rt-munger/SKILL.md | Inversion master — "Why will this fail?" |
 | **taleb** | skills/rt-taleb/SKILL.md | Risk philosopher — "Where is the hidden fragility?" |
 | **horowitz** | skills/rt-horowitz/SKILL.md | Wartime operator — "What's the hard thing nobody wants to say?" |
+
+### Public-Market Investors (`investors`)
+| Name | Skill Path | One-Line Role |
+|------|-----------|--------------|
+| **buffett** | skills/rt-buffett/SKILL.md | Value investor — "Think in decades; what's the moat?" |
+| **marks** | skills/rt-marks/SKILL.md | Cycle reader — "Where are we in the cycle?" |
+| **lynch** | skills/rt-lynch/SKILL.md | Growth-at-reasonable-price — "Know what you own, and why." |
+| **dalio** | skills/rt-dalio/SKILL.md | Systematic macro — "Which pattern in history is this?" |
+| **ptj** | skills/rt-ptj/SKILL.md | Macro momentum trader — "Where's the 5:1 setup?" |
+| **soros** | skills/rt-soros/SKILL.md | Reflexivity theorist — "What flawed core belief is driving this?" |
+
+### Builders & Bootstrappers (`builders`)
+| Name | Skill Path | One-Line Role |
+|------|-----------|--------------|
 | **levels** | skills/rt-levels/SKILL.md | Solo builder — "Just ship it. What's your MRR?" |
 | **walling** | skills/rt-walling/SKILL.md | SaaS strategist — "Where are you on the staircase?" |
+
+### Growth & Flywheel (`growth`)
+| Name | Skill Path | One-Line Role |
+|------|-----------|--------------|
 | **balfour** | skills/rt-balfour/SKILL.md | Growth systems architect — "Which fit is broken?" |
 | **chen** | skills/rt-chen/SKILL.md | Network effects expert — "What's the atomic network?" |
 | **collins** | skills/rt-collins/SKILL.md | Flywheel originator — "Are you building momentum or in a doom loop?" |
@@ -39,27 +58,31 @@ Parse the input as: `[topic] [group_or_persona ...]`
 
 | Shortcut | Expands to | Description |
 |----------|-----------|-------------|
-| `investors` | thiel, munger, taleb, horowitz | Investment & strategy mindsets |
+| `vc` | thiel, munger, taleb, horowitz | VC & strategy mindsets |
+| `investors` | buffett, marks, lynch, dalio, ptj, soros | Public-market investors & macro traders |
 | `builders` | levels, walling | Bootstrapping & indie hacking |
 | `growth` | balfour, chen, collins, verna, currier | Flywheel, PLG, network effects |
-| `all` | all 11 personas | Everyone |
+| `all` | all 17 personas | Everyone |
 
 ### Parsing rules
 
-- If no personas/groups specified, default to **investors** (thiel, munger, taleb, horowitz)
-- Groups and individual names can be mixed: `investors levels` = thiel + munger + taleb + horowitz + levels
+- If no personas/groups specified, default to **vc** (thiel, munger, taleb, horowitz)
+- Groups and individual names can be mixed: `vc levels` = thiel + munger + taleb + horowitz + levels
 - If only one persona specified, add at least one contrasting voice automatically
-- Minimum 2 participants, maximum 6
-- Deduplicate: `investors thiel` = investors (thiel is already included)
+- Minimum 2 participants, maximum 6 (if `all` is selected, the moderator picks a representative 6-person subset across categories)
+- Deduplicate: `vc thiel` = vc (thiel is already included)
 
 ### Examples
 
 ```
-/rt-roundtable AI 버블인가                          → investors (4인)
-/rt-roundtable builders 사이드프로젝트 사업화          → levels + walling
-/rt-roundtable investors levels 케어 사업 적자 전략    → investors 4인 + levels
-/rt-roundtable all 한국 세무 SaaS 시장 진입           → 6인 전원
-/rt-roundtable thiel walling 법인환급 확장 전략        → thiel + walling
+/rt-roundtable AI 버블인가                                → vc (4인)
+/rt-roundtable investors 지금 주식 더 살 때인가             → buffett + marks + lynch + dalio + ptj + soros
+/rt-roundtable builders 사이드프로젝트 사업화              → levels + walling
+/rt-roundtable vc levels 케어 사업 적자 전략                → vc 4인 + levels
+/rt-roundtable buffett munger 우량주 장기 보유 vs 집중투자    → 2인 크로스 포맷
+/rt-roundtable marks soros 지금 시장 사이클 어디인가         → 2인 매크로 토론
+/rt-roundtable all 한국 세무 SaaS 시장 진입                 → 17인 중 대표 6인
+/rt-roundtable thiel walling 법인환급 확장 전략             → thiel + walling
 ```
 
 ---
@@ -157,10 +180,10 @@ As the moderator, you synthesize the full discussion into a structured output:
 
 | 참여자 | 핵심 주장 | 프레임워크 |
 |--------|----------|-----------|
-| Thiel  | ...      | ...       |
-| Munger | ...      | ...       |
-| Taleb  | ...      | ...       |
-| Horowitz | ...    | ...       |
+| [Persona A] | ... | ... |
+| [Persona B] | ... | ... |
+| [Persona C] | ... | ... |
+| [Persona D] | ... | ... |
 
 ### 합의점 (Convergence)
 - 2명 이상이 동의하는 핵심 포인트

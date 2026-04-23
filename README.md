@@ -1,6 +1,6 @@
 # Roundtable
 
-AI advisory roundtable for Claude Code and Codex CLI. Six legendary thinkers debate your strategy — backed by real-time market research.
+AI advisory roundtable for Claude Code and Codex CLI. Seventeen legendary thinkers debate your strategy — backed by real-time market research.
 
 ## What is this?
 
@@ -8,12 +8,12 @@ A set of agent skills that let you consult AI personas of world-class strategist
 
 **The flow:**
 ```
-Your question → Market Research (web search) → 6 Personas debate → Structured synthesis
+Your question → Market Research (web search) → N Personas debate → Structured synthesis
 ```
 
 ## Personas
 
-### Investors & Strategists
+### VC & Strategy
 
 | Skill | Persona | One-liner |
 |-------|---------|-----------|
@@ -21,6 +21,17 @@ Your question → Market Research (web search) → 6 Personas debate → Structu
 | `/rt-munger` | Charlie Munger | Inversion master — "How will this fail?" |
 | `/rt-taleb` | Nassim Taleb | Risk philosopher — "Where is the hidden fragility?" |
 | `/rt-horowitz` | Ben Horowitz | Wartime operator — "What's the hard thing nobody wants to say?" |
+
+### Public-Market Investors
+
+| Skill | Persona | One-liner |
+|-------|---------|-----------|
+| `/rt-buffett` | Warren Buffett | Value investor — "Think in decades; what's the moat?" |
+| `/rt-marks` | Howard Marks | Cycle reader — "Where are we in the cycle?" |
+| `/rt-lynch` | Peter Lynch | Growth-at-reasonable-price — "Know what you own, and why." |
+| `/rt-dalio` | Ray Dalio | Systematic macro — "Which pattern in history is this?" |
+| `/rt-ptj` | Paul Tudor Jones | Macro momentum trader — "Where's the 5:1 setup?" |
+| `/rt-soros` | George Soros | Reflexivity theorist — "What flawed core belief is driving this?" |
 
 ### Builders & Bootstrappers
 
@@ -92,12 +103,23 @@ cp -r roundtable/skills/builders/rt-* .claude/skills/
 cp -r roundtable/skills/core/rt-* .claude/skills/
 ```
 
+Only want the public-market investors?
+
+```bash
+git clone https://github.com/risingdream/roundtable.git
+cp -r roundtable/skills/investors/rt-* .claude/skills/
+cp -r roundtable/skills/core/rt-* .claude/skills/
+```
+
 ## Usage
 
 ### Individual consultation
 
 ```
 /rt-thiel Should I take VC funding for my AI startup?
+/rt-buffett Is $TICKER a good long-term compounder at this price?
+/rt-marks Where are we in the cycle right now?
+/rt-ptj What's the 5:1 setup in this chart?
 /rt-levels I want to build a SaaS but I'm overthinking the tech stack
 /rt-munger Evaluate this acquisition target for me
 ```
@@ -108,20 +130,24 @@ Use group shortcuts or individual names to pick participants:
 
 | Shortcut | Personas | Description |
 |----------|----------|-------------|
-| `investors` | thiel, munger, taleb, horowitz | Investment & strategy mindsets |
+| `vc` | thiel, munger, taleb, horowitz | VC & strategy mindsets |
+| `investors` | buffett, marks, lynch, dalio, ptj, soros | Public-market investors & macro traders |
 | `builders` | levels, walling | Bootstrapping & indie hacking |
 | `growth` | balfour, chen, collins, verna, currier | Flywheel, PLG, network effects |
-| `all` | all 11 | Everyone |
+| `all` | all 17 | Everyone |
 
 ```
-/rt-roundtable investors AI 버블인가                     → 4 investors
-/rt-roundtable builders 사이드프로젝트 사업화               → levels + walling
-/rt-roundtable investors levels AI 에이전트 시장 진입        → 4 investors + levels
-/rt-roundtable all 한국 B2B SaaS 시장 진출                 → all 11
+/rt-roundtable vc AI 버블인가                             → 4 vc strategists
+/rt-roundtable investors 지금 주식 더 살 때인가             → 6 public-market investors
+/rt-roundtable builders 사이드프로젝트 사업화              → levels + walling
+/rt-roundtable vc levels AI 에이전트 시장 진입              → 4 vc + levels
+/rt-roundtable buffett munger 우량주 집중투자 vs 분산       → 2 cross-persona
+/rt-roundtable marks soros 지금 시장 사이클 어디인가         → 2 macro voices
+/rt-roundtable all 한국 B2B SaaS 시장 진출                 → representative 6 across all categories
 /rt-roundtable thiel walling SaaS 확장 vs 채널 다변화       → individual pick
 ```
 
-Groups and individual names can be mixed freely. Default (no names) = `investors`.
+Groups and individual names can be mixed freely. Default (no names) = `vc`.
 
 The roundtable runs 4 rounds:
 1. **Research** — Web search for current market data, saved to `docs/research/`
@@ -168,11 +194,18 @@ The user has asked you about: **$ARGUMENTS**
 
 ```
 skills/
-├── investors/          # Investment & strategy mindsets
+├── vc/                 # VC & strategy mindsets
 │   ├── rt-thiel/
 │   ├── rt-munger/
 │   ├── rt-taleb/
 │   └── rt-horowitz/
+├── investors/          # Public-market investors & macro traders
+│   ├── rt-buffett/
+│   ├── rt-marks/
+│   ├── rt-lynch/
+│   ├── rt-dalio/
+│   ├── rt-ptj/
+│   └── rt-soros/
 ├── builders/           # Bootstrapping & indie hacking
 │   ├── rt-levels/
 │   └── rt-walling/
