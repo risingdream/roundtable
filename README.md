@@ -1,6 +1,6 @@
 # Roundtable
 
-AI advisory roundtable for Claude Code and Codex CLI. Seventeen legendary thinkers debate your strategy — backed by real-time market research.
+AI advisory roundtable for Claude Code and Codex CLI. Twenty legendary thinkers debate your strategy — backed by real-time market research.
 
 ## What is this?
 
@@ -18,18 +18,21 @@ Your question → Market Research (web search) → N Personas debate → Structu
 | Skill | Persona | One-liner |
 |-------|---------|-----------|
 | `/rt-thiel` | Peter Thiel | Contrarian visionary — "What secret are you not seeing?" |
-| `/rt-munger` | Charlie Munger | Inversion master — "How will this fail?" |
-| `/rt-taleb` | Nassim Taleb | Risk philosopher — "Where is the hidden fragility?" |
 | `/rt-horowitz` | Ben Horowitz | Wartime operator — "What's the hard thing nobody wants to say?" |
+| `/rt-andreessen` | Marc Andreessen | Techno-optimist — "Software is eating the world — why aren't you building faster?" |
+| `/rt-graham` | Paul Graham | Essayist-founder — "Who are your users, and do they love it?" |
+| `/rt-gurley` | Bill Gurley | Marketplace economist — "Do the unit economics actually work?" |
 
 ### Public-Market Investors
 
 | Skill | Persona | One-liner |
 |-------|---------|-----------|
 | `/rt-buffett` | Warren Buffett | Value investor — "Think in decades; what's the moat?" |
+| `/rt-munger` | Charlie Munger | Inversion master — "How will this fail?" |
 | `/rt-marks` | Howard Marks | Cycle reader — "Where are we in the cycle?" |
 | `/rt-lynch` | Peter Lynch | Growth-at-reasonable-price — "Know what you own, and why." |
 | `/rt-dalio` | Ray Dalio | Systematic macro — "Which pattern in history is this?" |
+| `/rt-taleb` | Nassim Taleb | Risk philosopher — "Where is the hidden fragility?" |
 | `/rt-ptj` | Paul Tudor Jones | Macro momentum trader — "Where's the 5:1 setup?" |
 | `/rt-soros` | George Soros | Reflexivity theorist — "What flawed core belief is driving this?" |
 
@@ -130,11 +133,11 @@ Use group shortcuts or individual names to pick participants:
 
 | Shortcut | Personas | Description |
 |----------|----------|-------------|
-| `vc` | thiel, munger, taleb, horowitz | VC & strategy mindsets |
-| `investors` | buffett, marks, lynch, dalio, ptj, soros | Public-market investors & macro traders |
+| `vc` | thiel, horowitz, andreessen, graham, gurley | VC & strategy mindsets |
+| `investors` | buffett, munger, marks, lynch, dalio, taleb, ptj, soros | Public-market investors & macro traders |
 | `builders` | levels, walling | Bootstrapping & indie hacking |
 | `growth` | balfour, chen, collins, verna, currier | Flywheel, PLG, network effects |
-| `all` | all 17 | Everyone |
+| `all` | all 20 | Everyone |
 
 ```
 /rt-roundtable vc AI 버블인가                             → 4 vc strategists
@@ -143,7 +146,7 @@ Use group shortcuts or individual names to pick participants:
 /rt-roundtable vc levels AI 에이전트 시장 진입              → 4 vc + levels
 /rt-roundtable buffett munger 우량주 집중투자 vs 분산       → 2 cross-persona
 /rt-roundtable marks soros 지금 시장 사이클 어디인가         → 2 macro voices
-/rt-roundtable all 한국 B2B SaaS 시장 진출                 → representative 6 across all categories
+/rt-roundtable all 한국 B2B SaaS 시장 진출                 → representative 6 across all 20 personas
 /rt-roundtable thiel walling SaaS 확장 vs 채널 다변화       → individual pick
 ```
 
@@ -196,14 +199,17 @@ The user has asked you about: **$ARGUMENTS**
 skills/
 ├── vc/                 # VC & strategy mindsets
 │   ├── rt-thiel/
-│   ├── rt-munger/
-│   ├── rt-taleb/
-│   └── rt-horowitz/
+│   ├── rt-horowitz/
+│   ├── rt-andreessen/
+│   ├── rt-graham/
+│   └── rt-gurley/
 ├── investors/          # Public-market investors & macro traders
 │   ├── rt-buffett/
+│   ├── rt-munger/
 │   ├── rt-marks/
 │   ├── rt-lynch/
 │   ├── rt-dalio/
+│   ├── rt-taleb/
 │   ├── rt-ptj/
 │   └── rt-soros/
 ├── builders/           # Bootstrapping & indie hacking
